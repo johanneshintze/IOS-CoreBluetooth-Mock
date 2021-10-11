@@ -125,12 +125,31 @@ open class CBMServiceMock: CBMService {
     ///   - isPrimary: The type of the service (primary or secondary).
     ///   - includedServices: Optional list of included services.
     ///   - characteristics: Optional list of characteristics.
-    public init(type uuid: CBMUUID, primary isPrimary: Bool,
+    public convenience init(type uuid: CBMUUID, primary isPrimary: Bool,
                 includedService: CBMServiceMock...,
                 characteristics: CBMCharacteristicMock...) {
+        self.init(type: uuid,
+                  primary: isPrimary,
+                  includedService: includedService,
+                  characteristics: characteristics)
+    }
+
+    /// Returns a service, initialized with a service type and UUID.
+    /// - Parameters:
+    ///   - uuid: The Bluetooth UUID of the service.
+    ///   - isPrimary: The type of the service (primary or secondary).
+    ///   - includedServices: Optional array of included services.
+    ///   - characteristics: Optional aray of characteristics.
+    public init(type uuid: CBMUUID, primary isPrimary: Bool,
+                includedService: [CBMServiceMock]? = nil,
+                characteristics: [CBMCharacteristicMock]? = nil) {
         super.init(type: uuid, primary: isPrimary)
-        self._includedServices = includedService
-        self._characteristics = characteristics
+        if let includedService = includedService {
+            self._includedServices = includedService
+        }
+        if let characteristics = characteristics {
+            self._characteristics = characteristics
+        }
     }
     
     open override func isEqual(_ object: Any?) -> Bool {
